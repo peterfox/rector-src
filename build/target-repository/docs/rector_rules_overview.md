@@ -42,7 +42,7 @@
 
 - [Php81](#php81) (11)
 
-- [Php82](#php82) (4)
+- [Php82](#php82) (3)
 
 - [Privatization](#privatization) (4)
 
@@ -52,7 +52,7 @@
 
 - [Strict](#strict) (5)
 
-- [Transform](#transform) (22)
+- [Transform](#transform) (23)
 
 - [TypeDeclaration](#typedeclaration) (41)
 
@@ -5734,45 +5734,6 @@ Refactor Spatie enum method calls
 
 ## Php82
 
-### AddSensitiveParameterAttributeRector
-
-Add SensitiveParameter attribute to method and function configured parameters
-
-:wrench: **configure it!**
-
-- class: [`Rector\Php82\Rector\Param\AddSensitiveParameterAttributeRector`](../rules/Php82/Rector/Param/AddSensitiveParameterAttributeRector.php)
-
-```php
-<?php
-
-declare(strict_types=1);
-
-use Rector\Config\RectorConfig;
-use Rector\Php82\Rector\Param\AddSensitiveParameterAttributeRector;
-
-return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->ruleWithConfiguration(AddSensitiveParameterAttributeRector::class, [
-        AddSensitiveParameterAttributeRector::SENSITIVE_PARAMETERS => [
-            'password',
-        ],
-    ]);
-};
-```
-
-↓
-
-```diff
- class SomeClass
- {
--    public function run(string $password)
-+    public function run(#[\SensitiveParameter] string $password)
-     {
-     }
- }
-```
-
-<br>
-
 ### FilesystemIteratorSkipDotsRector
 
 Prior PHP 8.2 FilesystemIterator::SKIP_DOTS was always set and could not be removed, therefore FilesystemIterator::SKIP_DOTS is added in order to keep this behaviour.
@@ -6754,6 +6715,45 @@ return static function (RectorConfig $rectorConfig): void {
 +class SomeClass implements SomeInterface
  {
      use SomeTrait;
+ }
+```
+
+<br>
+
+### AddSensitiveParameterAttributeRector
+
+Add SensitiveParameter attribute to method and function configured parameters
+
+:wrench: **configure it!**
+
+- class: [`Rector\Transform\Rector\Param\AddSensitiveParameterAttributeRector`](../rules/Transform/Rector/Param/AddSensitiveParameterAttributeRector.php)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Rector\Config\RectorConfig;
+use Rector\Transform\Rector\Param\AddSensitiveParameterAttributeRector;
+
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->ruleWithConfiguration(AddSensitiveParameterAttributeRector::class, [
+        AddSensitiveParameterAttributeRector::SENSITIVE_PARAMETERS => [
+            'password',
+        ],
+    ]);
+};
+```
+
+↓
+
+```diff
+ class SomeClass
+ {
+-    public function run(string $password)
++    public function run(#[\SensitiveParameter] string $password)
+     {
+     }
  }
 ```
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rector\Tests\Php82\Rector\Param\AddSensitiveParameterAttributeRector;
+namespace Rector\Tests\Transform\Rector\Param\AddSensitiveParameterAttributeRector;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rector\Tests\Php82\Rector\Param\AddSensitiveParameterAttributeRector\Fixture;
+namespace Rector\Tests\Transform\Rector\Param\AddSensitiveParameterAttributeRector\Fixture;
 
 class SkipSensitiveParameterAttributeExists
 {

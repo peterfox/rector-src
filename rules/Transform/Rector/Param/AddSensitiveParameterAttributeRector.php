@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rector\Php82\Rector\Param;
+namespace Rector\Transform\Rector\Param;
 
 use PhpParser\Node;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
@@ -14,7 +14,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
 
 /**
- * @see \Rector\Tests\Php82\Rector\Param\AddSensitiveParameterAttributeRector\AddSensitiveParameterAttributeRectorTest
+ * @see \Rector\Tests\Transform\Rector\Param\AddSensitiveParameterAttributeRector\AddSensitiveParameterAttributeRectorTest
  */
 class AddSensitiveParameterAttributeRector extends AbstractRector implements ConfigurableRectorInterface, MinPhpVersionInterface
 {
@@ -25,8 +25,9 @@ class AddSensitiveParameterAttributeRector extends AbstractRector implements Con
      */
     private array $sensitiveParameters;
 
-    public function __construct(protected PhpAttributeAnalyzer $phpAttributeAnalyzer)
-    {
+    public function __construct(
+        protected PhpAttributeAnalyzer $phpAttributeAnalyzer
+    ) {
     }
 
     /**
