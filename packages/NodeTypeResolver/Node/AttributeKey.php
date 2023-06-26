@@ -251,4 +251,54 @@ final class AttributeKey
      * @var string
      */
     public const IS_OBJECT_CALLER = 'is_object_caller';
+
+    /**
+     * @var string
+     */
+    public const IS_NAMESPACE_NAME = 'is_namespace_name';
+
+    /**
+     * @var string
+     */
+    public const IS_USEUSE_NAME = 'is_useuse_name';
+
+    /**
+     * @var string
+     */
+    public const IS_STATICCALL_CLASS_NAME = 'is_staticcall_class_name';
+
+    /**
+     * @var string
+     */
+    public const IS_FUNCCALL_NAME = 'is_funccall_name';
+
+    /**
+     * @var string
+     */
+    public const IS_CONSTFETCH_NAME = 'is_constfetch_name';
+
+    /**
+     * @var string
+     */
+    public const IS_NEW_INSTANCE_NAME = 'is_new_instance_name';
+
+    /**
+     * @var string
+     */
+    public const IS_RETURN_EXPR = 'is_return_expr';
+
+    /**
+     * @var string
+     */
+    public const IS_ARG_VALUE = 'is_arg_value';
+
+    /**
+     * @var string
+     */
+    public const IS_PARAM_TYPE = 'is_param_type';
+
+    /**
+     * @var string
+     */
+    public const FROM_FUNC_CALL_NAME = 'FROM_FUNC_CALL_NAME';
 }

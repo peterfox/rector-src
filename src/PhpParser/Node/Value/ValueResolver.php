@@ -7,13 +7,13 @@ namespace Rector\Core\PhpParser\Node\Value;
 use PhpParser\ConstExprEvaluationException;
 use PhpParser\ConstExprEvaluator;
 use PhpParser\Node\Expr;
-use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\MagicConst\Dir;
 use PhpParser\Node\Scalar\MagicConst\File;
+use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Type\Constant\ConstantArrayType;
@@ -26,6 +26,7 @@ use Rector\Core\Provider\CurrentFileProvider;
 use Rector\Core\Reflection\ReflectionResolver;
 use Rector\Core\Util\Reflection\PrivatesAccessor;
 use Rector\NodeNameResolver\NodeNameResolver;
+use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\NodeTypeResolver\NodeTypeResolver;
 
 /**
@@ -71,10 +72,6 @@ final class ValueResolver
             if ($this->nodeNameResolver->isName($expr->name, 'class')) {
                 return $class;
             }
-        }
-
-        if ($expr instanceof ArrayDimFetch) {
-            return null;
         }
 
         $value = $this->resolveExprValueForConst($expr);
@@ -311,6 +308,13 @@ final class ValueResolver
 
     private function resolveClassFromSelfStaticParent(ClassConstFetch $classConstFetch, string $class): string
     {
+        // Scope may be loaded too late, so return empty string early
+        // it will be resolved on next traverse
+        $scope = $classConstFetch->getAttribute(AttributeKey::SCOPE);
+        if (! $scope instanceof Scope) {
+            return '';
+        }
+
         $classReflection = $this->reflectionResolver->resolveClassReflection($classConstFetch);
         if (! $classReflection instanceof ClassReflection) {
             throw new ShouldNotHappenException(
