@@ -93,21 +93,21 @@ CODE_SAMPLE
 
             foreach ($parametersAcceptor->getParameters() as $index => $parameter) {
                 if ($parameter instanceof ParameterReflectionWithPhpDocs && $parameter->getClosureThisType() !== null) {
-                    $parameterIndex[] = $index;
+                    $parameterIndex[$index] = $parameter->getClosureThisType();
                 }
             }
 
             foreach ($node->args as $index => $arg) {
-                if ($arg->value instanceof Closure && in_array($index, $parameterIndex, true)) {
+                if ($arg->value instanceof Closure && array_key_exists($index, $parameterIndex)) {
 
-                    $arg->value->setAttribute('cannot-be-static', true);
+                    $arg->value->setAttribute('closureThisType', true);
                 }
             }
 
             return null;
         }
 
-        if ($node->hasAttribute('cannot-be-static')) {
+        if ($node->hasAttribute('closureThisType')) {
             return null;
         }
 
@@ -116,7 +116,7 @@ CODE_SAMPLE
         }
 
         $node->static = true;
-        
+
         return $node;
     }
 }
