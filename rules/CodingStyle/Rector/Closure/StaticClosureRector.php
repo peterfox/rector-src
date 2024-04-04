@@ -90,16 +90,26 @@ CODE_SAMPLE
             );
 
             $parameterIndex = [];
+            $parameterNames = [];
 
             foreach ($parametersAcceptor->getParameters() as $index => $parameter) {
                 if ($parameter instanceof ParameterReflectionWithPhpDocs && $parameter->getClosureThisType() !== null) {
                     $parameterIndex[$index] = $parameter->getClosureThisType();
+                    $parameterNames[$parameter->getName()] = $parameter->getClosureThisType();
                 }
             }
 
-            foreach ($node->args as $index => $arg) {
-                if ($arg->value instanceof Closure && array_key_exists($index, $parameterIndex)) {
+            foreach ($node->getArgs() as $index => $arg) {
 
+                if (!$arg->value instanceof Closure) {
+                    continue;
+                }
+
+                if (
+                    ($arg->name?->name !== null && array_key_exists($arg->name->toString(), $parameterNames)) ||
+                    ($arg->name?->name === null && array_key_exists($index, $parameterIndex))
+                ) {
+                    $arg->setAttribute('closureThisType', true);
                     $arg->value->setAttribute('closureThisType', true);
                 }
             }

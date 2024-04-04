@@ -15,11 +15,53 @@ BindObject::call(function () {
 /**
  * @param-closure-this \Rector\Tests\CodingStyle\Rector\Closure\StaticClosureRector\Source\BindObject $closure
  */
-function bind_on_object($closure)
+function bind_on_object(\Closure $closure = null, \Closure $anotherClosure = null)
 {
 
 }
 
-bind_on_object(function () {
+bind_on_object(anotherClosure: function () {
     echo 'foobar';
 });
+
+bind_on_object(closure: function () {
+    echo 'foobar';
+}, anotherClosure: function () {
+    echo 'foobar';
+});
+
+?>
+----
+<?php
+
+namespace Rector\Tests\CodingStyle\Rector\Closure\StaticClosureRector\Fixture;
+
+use Rector\Tests\CodingStyle\Rector\Closure\StaticClosureRector\Source\BindObject;
+
+BindObject::call(function () {
+    echo 'foobar';
+});
+
+(new BindObject())->callOnObject(function () {
+    echo 'foobar';
+});
+
+/**
+ * @param-closure-this \Rector\Tests\CodingStyle\Rector\Closure\StaticClosureRector\Source\BindObject $closure
+ */
+function bind_on_object(\Closure $closure = null, \Closure $anotherClosure = null)
+{
+
+}
+
+bind_on_object(anotherClosure: static function () {
+    echo 'foobar';
+});
+
+bind_on_object(closure: function () {
+    echo 'foobar';
+}, anotherClosure: static function () {
+    echo 'foobar';
+});
+
+?>
