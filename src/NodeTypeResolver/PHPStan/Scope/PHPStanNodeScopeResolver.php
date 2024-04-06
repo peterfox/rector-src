@@ -206,7 +206,7 @@ final class PHPStanNodeScopeResolver
         $nodeTraverser->addVisitor(new ExprScopeFromStmtNodeVisitor($this, $filePath, $scope));
         foreach ($this->postScopeNodeVisitors as $nodeVisitor) {
             $nodeVisitor->setScope($scope);
-            $this->nodeTraverser->addVisitor($nodeVisitor);
+            $nodeTraverser->addVisitor($nodeVisitor);
         }
         $nodeTraverser->traverse($stmts);
 

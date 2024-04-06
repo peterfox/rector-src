@@ -65,7 +65,6 @@ CODE_SAMPLE
     public function refactor(Node $node): Node|int|null
     {
         if ($node->getAttribute('closureThisType')) {
-            dump_node($node);
             return null;
         }
 

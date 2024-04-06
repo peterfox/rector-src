@@ -37,6 +37,20 @@ class ClosureThisTypeNodeVisitor extends NodeVisitorAbstract implements ScopeRes
             $node instanceof Node\Expr\MethodCall ||
             $node instanceof Node\Expr\FuncCall
         ) {
+            $usesClosures = false;
+
+            // check early to save time on grabbing the reflection and processing
+            foreach ($node->getArgs() as $arg) {
+
+                if ($arg->value instanceof Closure) {
+                    $usesClosures = true;
+                }
+            }
+
+            if (! $usesClosures) {
+                return null;
+            }
+
             $reflection = $this->reflectionResolver->resolveFunctionLikeReflectionFromCall($node);
 
             if ($reflection === null) {
@@ -52,7 +66,7 @@ class ClosureThisTypeNodeVisitor extends NodeVisitorAbstract implements ScopeRes
                     continue;
                 }
 
-                if ($arg->name?->name !== null) {
+                if ($arg->name instanceof Node\Identifier) {
                     /** @var ParameterReflectionWithPhpDocs $parameter */
                     foreach ($parameters as $parameter) {
                         if ($parameter->getClosureThisType() !== null && $arg->name->name === $parameter->getName()) {
@@ -63,7 +77,7 @@ class ClosureThisTypeNodeVisitor extends NodeVisitorAbstract implements ScopeRes
                     continue;
                 }
 
-                if ($arg->name?->name === null) {
+                if ($arg->name === null) {
                     /** @var ParameterReflectionWithPhpDocs $parameter */
                     $parameter = $parameters[$index] ?? null;
 
