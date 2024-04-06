@@ -244,7 +244,6 @@ final class LazyContainerFactory
         NameNodeVisitor::class,
         StaticVariableNodeVisitor::class,
         StmtKeyNodeVisitor::class,
-        ClosureThisTypeNodeVisitor::class,
     ];
 
     /**
@@ -701,6 +700,10 @@ final class LazyContainerFactory
         $rectorConfig->when(PHPStanNodeScopeResolver::class)
             ->needs('$nodeVisitors')
             ->giveTagged(ScopeResolverNodeVisitorInterface::class);
+
+        $rectorConfig->when(PHPStanNodeScopeResolver::class)
+            ->needs('$postScopeNodeVisitors')
+            ->give(fn(Container $container) => [$container->make(ClosureThisTypeNodeVisitor::class)]);
 
         $this->registerTagged(
             $rectorConfig,

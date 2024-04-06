@@ -17,11 +17,17 @@ use Rector\Reflection\ReflectionResolver;
 class ClosureThisTypeNodeVisitor extends NodeVisitorAbstract implements ScopeResolverNodeVisitorInterface
 {
     private ReflectionResolver $reflectionResolver;
+    private $scope;
 
     // used to avoid recursion
     public function autowire(ReflectionResolver $reflectionResolver)
     {
         $this->reflectionResolver = $reflectionResolver;
+    }
+
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
     }
 
     public function enterNode(Node $node): ?Node
@@ -37,13 +43,7 @@ class ClosureThisTypeNodeVisitor extends NodeVisitorAbstract implements ScopeRes
                 return null;
             }
 
-            $scope = $node->getAttribute(AttributeKey::SCOPE);
-
-            if ($scope === null) {
-                return null;
-            }
-
-            $parametersAcceptor = ParametersAcceptorSelectorVariantsWrapper::select($reflection, $node, $scope);
+            $parametersAcceptor = ParametersAcceptorSelectorVariantsWrapper::select($reflection, $node, $this->scope);
             $parameters = $parametersAcceptor->getParameters();
 
             foreach ($node->getArgs() as $index => $arg) {

@@ -86,6 +86,7 @@ final class PHPStanNodeScopeResolver
         private readonly NodeScopeResolver $nodeScopeResolver,
         private readonly ReflectionProvider $reflectionProvider,
         iterable $nodeVisitors,
+        private readonly iterable $postScopeNodeVisitors,
         private readonly ScopeFactory $scopeFactory,
         private readonly PrivatesAccessor $privatesAccessor,
         private readonly NodeNameResolver $nodeNameResolver,
@@ -203,6 +204,10 @@ final class PHPStanNodeScopeResolver
         $nodeTraverser = new NodeTraverser();
         $nodeTraverser->addVisitor(new WrappedNodeRestoringNodeVisitor());
         $nodeTraverser->addVisitor(new ExprScopeFromStmtNodeVisitor($this, $filePath, $scope));
+        foreach ($this->postScopeNodeVisitors as $nodeVisitor) {
+            $nodeVisitor->setScope($scope);
+            $this->nodeTraverser->addVisitor($nodeVisitor);
+        }
         $nodeTraverser->traverse($stmts);
 
         return $stmts;

@@ -21,6 +21,10 @@ function bind_on_object(\Closure $closure = null, \Closure $anotherClosure = nul
 
 }
 
+bind_on_object(function () {
+    echo 'closure func call 0';
+});
+
 bind_on_object(anotherClosure: function () {
     echo 'anotherClosure func call 1';
 }, closureFinally: function () {
@@ -57,6 +61,10 @@ function bind_on_object(\Closure $closure = null, \Closure $anotherClosure = nul
 {
 
 }
+
+bind_on_object(function () {
+    echo 'closure func call 0';
+});
 
 bind_on_object(anotherClosure: static function () {
     echo 'anotherClosure func call 1';
