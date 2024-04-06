@@ -4,12 +4,12 @@ namespace Rector\Tests\CodingStyle\Rector\Closure\StaticClosureRector\Fixture;
 
 use Rector\Tests\CodingStyle\Rector\Closure\StaticClosureRector\Source\BindObject;
 
-BindObject::call(function () {
-    echo 'foobar';
+BindObject::call(closure: function () {
+    echo 'static call';
 });
 
 (new BindObject())->callOnObject(function () {
-    echo 'foobar';
+    echo 'method call';
 });
 
 /**
@@ -22,15 +22,15 @@ function bind_on_object(\Closure $closure = null, \Closure $anotherClosure = nul
 }
 
 bind_on_object(anotherClosure: function () {
-    echo 'foobar';
+    echo 'anotherClosure func call 1';
 }, closureFinally: function () {
-    echo 'foobar';
+    echo 'closureFinally 1';
 });
 
 bind_on_object(closure: function () {
-    echo 'foobar';
+    echo 'closure func call 2';
 }, anotherClosure: function () {
-    echo 'foobar';
+    echo 'anotherClosure func call 2';
 });
 
 ?>
@@ -42,11 +42,11 @@ namespace Rector\Tests\CodingStyle\Rector\Closure\StaticClosureRector\Fixture;
 use Rector\Tests\CodingStyle\Rector\Closure\StaticClosureRector\Source\BindObject;
 
 BindObject::call(function () {
-    echo 'foobar';
+    echo 'static call';
 });
 
 (new BindObject())->callOnObject(function () {
-    echo 'foobar';
+    echo 'method call';
 });
 
 /**
@@ -59,15 +59,15 @@ function bind_on_object(\Closure $closure = null, \Closure $anotherClosure = nul
 }
 
 bind_on_object(anotherClosure: static function () {
-    echo 'foobar';
+    echo 'anotherClosure func call 1';
 }, closureFinally: function () {
-    echo 'foobar';
+    echo 'closureFinally func call 1';
 });
 
 bind_on_object(closure: function () {
-    echo 'foobar';
+    echo 'closure func call 2';
 }, anotherClosure: static function () {
-    echo 'foobar';
+    echo 'anotherClosure func call 2';
 });
 
 ?>

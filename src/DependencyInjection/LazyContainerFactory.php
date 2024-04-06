@@ -100,6 +100,7 @@ use Rector\NodeTypeResolver\PHPStan\Scope\NodeVisitor\GlobalVariableNodeVisitor;
 use Rector\NodeTypeResolver\PHPStan\Scope\NodeVisitor\NameNodeVisitor;
 use Rector\NodeTypeResolver\PHPStan\Scope\NodeVisitor\StaticVariableNodeVisitor;
 use Rector\NodeTypeResolver\PHPStan\Scope\NodeVisitor\StmtKeyNodeVisitor;
+use Rector\NodeTypeResolver\PHPStan\Scope\NodeVisitor\ClosureThisTypeNodeVisitor;
 use Rector\NodeTypeResolver\PHPStan\Scope\PHPStanNodeScopeResolver;
 use Rector\NodeTypeResolver\Reflection\BetterReflection\SourceLocatorProvider\DynamicSourceLocatorProvider;
 use Rector\Php80\AttributeDecorator\DoctrineConverterAttributeDecorator;
@@ -243,6 +244,7 @@ final class LazyContainerFactory
         NameNodeVisitor::class,
         StaticVariableNodeVisitor::class,
         StmtKeyNodeVisitor::class,
+        ClosureThisTypeNodeVisitor::class,
     ];
 
     /**
@@ -682,6 +684,17 @@ final class LazyContainerFactory
             ): void {
                 $annotationToAttributeMapper = $container->make(AnnotationToAttributeMapper::class);
                 $doctrineAnnotationAnnotationToAttributeMapper->autowire($annotationToAttributeMapper);
+            }
+        );
+
+        $rectorConfig->afterResolving(
+            ClosureThisTypeNodeVisitor::class,
+            function (
+                ClosureThisTypeNodeVisitor $closureTypeArgNodeVisitor,
+                Container                  $container
+            ) {
+                $reflectionProvider = $container->make(\Rector\Reflection\ReflectionResolver::class);
+                $closureTypeArgNodeVisitor->autowire($reflectionProvider);
             }
         );
 
