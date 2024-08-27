@@ -15,17 +15,26 @@ final readonly class AddClosureParamTypeFromArg
      * @param int<0, max> $fromArgPosition
      */
     public function __construct(
-        private string $className,
+        private ?string $className,
         private string $methodName,
         private int $callLikePosition,
         private int $functionLikePosition,
         private int $fromArgPosition,
     ) {
-        RectorAssert::className($className);
+        if (is_string($className)) {
+            RectorAssert::className($className);
+            RectorAssert::methodName($methodName);
+        } else {
+            RectorAssert::functionName($methodName);
+        }
     }
 
-    public function getObjectType(): ObjectType
+    public function getObjectType(): ?ObjectType
     {
+        if ($this->className === null) {
+            return null;
+        }
+
         return new ObjectType($this->className);
     }
 

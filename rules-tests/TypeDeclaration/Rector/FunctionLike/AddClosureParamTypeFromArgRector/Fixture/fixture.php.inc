@@ -8,6 +8,10 @@ SimpleContainer::someCall(\Rector\Tests\TypeDeclaration\Rector\FunctionLike\AddC
     return $object;
 });
 
+tap(new \Rector\Tests\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromArgRector\Source\SomeType(), function ($object) {
+    return $object;
+});
+
 ?>
 -----
 <?php
@@ -17,6 +21,10 @@ namespace Rector\Tests\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFr
 use Rector\Tests\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromArgRector\Source\SimpleContainer;
 
 SimpleContainer::someCall(\Rector\Tests\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromArgRector\Source\SomeType::class, function (\Rector\Tests\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromArgRector\Source\SomeType $object) {
+    return $object;
+});
+
+tap(new \Rector\Tests\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromArgRector\Source\SomeType(), function (\Rector\Tests\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromArgRector\Source\SomeType $object) {
     return $object;
 });
 

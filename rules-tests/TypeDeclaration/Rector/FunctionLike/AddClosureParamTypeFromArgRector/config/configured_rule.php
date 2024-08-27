@@ -12,6 +12,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig
         ->ruleWithConfiguration(AddClosureParamTypeFromArgRector::class, [
             new AddClosureParamTypeFromArg(SimpleContainer::class, 'someCall', 1, 0, 0),
+            new AddClosureParamTypeFromArg(null, 'tap', 1, 0, 0),
         ]);
 
     $rectorConfig->phpVersion(PhpVersionFeature::MIXED_TYPE);
